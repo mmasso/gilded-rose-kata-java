@@ -1,40 +1,61 @@
 package edu.elsmancs.gildedrose.domain;
 
-public class NormalItem extends Item {
+public class NormalItem {
 
-    public NormalItem(String name, Integer sell_in, Integer quality) {
-        super(name, sell_in, quality);
+    /**
+     * Item 18: Favor composition over inheritance.
+     * Each instance method in the new class invokes
+     * the corresponding method on the contained instance
+     * of the existing class and returns the results.
+     * This is known as forwarding, and the methods in the
+     * new class are known as forwarding methods.
+     * Bloch, Joshua; Effective Java, Third Edition.
+     */
+
+    /**
+     * Item 17: Minimize mutability.
+     * Bloch, Joshua; Effective Java, Third Edition.
+     */
+    private final Item item;
+
+    public NormalItem(String name, int sell_in, int quality) {
+        this.item = new Item(name, sell_in, quality);
     }
 
-    public void setQuality(Integer value) {
-        this.quality = value;
+    public String getName() {
+        return item.getName();
     }
 
-    public void setSell_in() {
-        this.sell_in = this.getSell_in() - 1;
+    public int getSell_in() {
+        return item.getSell_in();
     }
 
-    public void computeQuality(Integer value) {
+    public int getQuality() {
+        return item.getQuality();
+    }
 
-        if (this.getQuality() + value > 50) {
-            this.setQuality(50);
+    public void setSell_in() { item.setSell_in(); }
+
+    void computeQuality(int value) {
+
+        if (getQuality() + value > 50) {
+            item.setQuality(50);
         }
-        else if (this.getQuality() + value >= 0) {
-            this.setQuality(this.getQuality() + value);
+        else if (getQuality() + value >= 0) {
+            item.setQuality(getQuality() + value);
         }
         else {
-            this.setQuality(0);
+            item.setQuality(0);
         }
     }
 
     public void updateQuality() {
-        
-        if (this.getSell_in() > 0) {
-            this.computeQuality(-1);
-        } else {
-            this.computeQuality(-2);
-        }
-        this.setSell_in();
 
+        if (getSell_in() > 0) {
+            computeQuality(-1);
+        } else {
+            computeQuality(-2);
+        }
+        item.setSell_in();
     }
 }
